@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Models.DTO;
 using NZWalksAPI.Repositories;
+using System.Reflection.Metadata.Ecma335;
 
 namespace NZWalksAPI.Controllers
 {
@@ -29,13 +31,62 @@ namespace NZWalksAPI.Controllers
             var walk = _mapper.Map<Walk>(addWalkRequestDto);
             var createdWalk = await _walkRepositories.CreateAsync(walk);
 
-            if(createdWalk is null)
+            if (createdWalk is null)
             {
                 return NotFound();
             }
             //Map Domain Model to Dto
             var walkDto = _mapper.Map<WalkDto>(createdWalk);
             return Ok(walkDto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var walksDomainModel = await _walkRepositories.GetAsync();
+            //Map walks to List<WalkDto>
+            var walksDto = _mapper.Map<List<WalkDto>>(walksDomainModel);
+            return Ok(walksDto);
+        }
+
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Get([FromRoute] Guid id)
+        {
+            var walkDomainModel = await _walkRepositories.GetByIdAsync(id);
+            if (walkDomainModel is null)
+            {
+                return NotFound();
+            }
+
+            //Map walk to walk Dto
+            return Ok(_mapper.Map<WalkDto>(walkDomainModel));
+        }
+
+        //Controller for the Work update
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateWorkRequestDto update)
+        {
+            var walkDomainModel = _mapper.Map<Walk>(update);
+            var walk = await _walkRepositories.UpdateAsync(id, walkDomainModel);
+            if (walk is null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<WalkDto>(walk));
+        }
+
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var walkDomainModel = await  _walkRepositories.DeleteAsync(id);
+            if(walkDomainModel is null)
+            {
+              return NotFound();
+            }
+            return Ok(_mapper.Map<WalkDto>(walkDomainModel));
         }
     }
 }
