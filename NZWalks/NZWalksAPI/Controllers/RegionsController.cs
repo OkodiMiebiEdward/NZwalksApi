@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,9 @@ namespace NZWalksAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class RegionsController : ControllerBase
     {
-        
         private readonly IRegionRepositories _regionRepositories;
         private readonly IMapper _mapper;
 
@@ -26,6 +27,7 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "READER")]
         public async Task<IActionResult> GetAll()
         {
             var regionsDomain = await _regionRepositories.GetAllAsync();
@@ -50,6 +52,7 @@ namespace NZWalksAPI.Controllers
 
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "READER")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var region = await _regionRepositories.GetByIdAsync(id);
@@ -72,6 +75,7 @@ namespace NZWalksAPI.Controllers
         //Post Action: To save regions to the Database
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "WRITER")]
         public async Task<IActionResult> Create([FromBody] AddRegionRequestDto newRegion)
         { 
             
@@ -80,12 +84,12 @@ namespace NZWalksAPI.Controllers
                 //Map domain model back to DTO
                 var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
                 return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
-            
         }
 
         //Update a Region
         [HttpPut]
         [ValidateModel]
+        [Authorize(Roles = "WRITER")]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id,[FromBody] UpdateRegionRequestDto updateRegionRequest)
         { 
@@ -103,6 +107,7 @@ namespace NZWalksAPI.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "WRITER")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var recordToDelete = await _regionRepositories.DeleteAsync(id);

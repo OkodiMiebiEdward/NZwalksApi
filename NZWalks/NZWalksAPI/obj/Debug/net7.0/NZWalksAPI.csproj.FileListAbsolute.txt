@@ -77,3 +77,10 @@ C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\runti
 C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\AutoMapper.dll
 C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\obj\Debug\net7.0\NZWalksAPI.sourcelink.json
 C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\User\OneDrive\Desktop\NZwalks\NZWalks\NZWalksAPI\bin\Debug\net7.0\Microsoft.Extensions.Options.dll

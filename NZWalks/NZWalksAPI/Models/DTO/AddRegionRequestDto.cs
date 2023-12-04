@@ -4,9 +4,10 @@ namespace NZWalksAPI.Models.DTO
 {
     public class AddRegionRequestDto
     {
+
         [Required]
-        [MinLength(3,ErrorMessage ="Code has to have a minimum length of 3 characters")]
-        [MaxLength(3, ErrorMessage ="Code has to have a maximum length of 3 characters")]
+        [MinLength(3, ErrorMessage = "Code has to have a minimum length of 3 characters")]
+        [MaxLength(3, ErrorMessage = "Code has to have a maximum length of 3 characters")]
         public string Code { get; set; }
         
         [Required]
