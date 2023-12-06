@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NZWalksAPI.Data;
 using NZWalksAPI.Mappings;
 using NZWalksAPI.Repositories;
+using Serilog;
 using System.Text;
 
 namespace NZWalksAPI
@@ -18,9 +20,18 @@ namespace NZWalksAPI
         {
             var builder = WebApplication.CreateBuilder(args);
             var nzWalksConnectionstring = builder.Configuration.GetConnectionString("NZwalksConnectionString");
+            var logger = new LoggerConfiguration()
+                                       .WriteTo.Console()
+                                       .MinimumLevel.Information()
+                                       .CreateLogger();
+
+           
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddHttpContextAccessor();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
@@ -32,7 +43,6 @@ namespace NZWalksAPI
                 });
                 options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme,
                     new OpenApiSecurityScheme { 
-
                         Name = "Authorization",
                         In = ParameterLocation.Header,
                         Type = SecuritySchemeType.ApiKey,
@@ -55,7 +65,6 @@ namespace NZWalksAPI
                         new List<string>()
                     }
                 });
-
             });
 
             builder.Services
@@ -67,6 +76,7 @@ namespace NZWalksAPI
             builder.Services.AddScoped<IRegionRepositories, SqlReqionRepository>();
             builder.Services.AddScoped<IWalkRepositories,SqlWalkRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddScoped<IImageRepository,LocalImageRepository>();
 
             builder.Services.AddAutoMapper(typeof(AutomapperProfiles));
 
@@ -112,8 +122,11 @@ namespace NZWalksAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+                RequestPath = "/Images"
+            });
             app.MapControllers();
 
             app.Run();
