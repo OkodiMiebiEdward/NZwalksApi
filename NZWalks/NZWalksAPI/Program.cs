@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NZWalksAPI.Data;
 using NZWalksAPI.Mappings;
+using NZWalksAPI.Middlewares;
 using NZWalksAPI.Repositories;
 using Serilog;
 using System.Text;
@@ -22,6 +23,7 @@ namespace NZWalksAPI
             var nzWalksConnectionstring = builder.Configuration.GetConnectionString("NZwalksConnectionString");
             var logger = new LoggerConfiguration()
                                        .WriteTo.Console()
+                                       //.WriteTo.File("Logs/Nzwalks_Log.txt", rollingInterval: RollingInterval.Minute)
                                        .MinimumLevel.Information()
                                        .CreateLogger();
 
@@ -118,6 +120,8 @@ namespace NZWalksAPI
                 app.UseSwaggerUI();
             }
 
+            //Custom Middleware Thrown When Their Is An Exception
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+<div>
+       @{  
+            var num = 15;
+            if(num == 16)
+            {
+               <div>
+                  <p class="text-danger">
+                    Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, 
+                    iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.
+                  </p>
+            </div>
+            }
+            else
+            {
+                <p class="text-black">
+                Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, 
+                iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.
+                </p>
+            }
+        }
+</div>

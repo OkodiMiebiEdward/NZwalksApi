@@ -8,6 +8,7 @@ using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Models.DTO;
 using NZWalksAPI.Repositories;
+using System.Net;
 using System.Reflection.Metadata.Ecma335;
 
 namespace NZWalksAPI.Controllers
@@ -48,12 +49,14 @@ namespace NZWalksAPI.Controllers
             ,[FromQuery]string? sortBy, [FromQuery]bool? isAscending, 
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
-            var walksDomainModel = await _walkRepositories.GetAsync(filterOn,filterQuery,sortBy
-                ,isAscending ?? true,pageNumber,pageSize);
-
+                
+                var walksDomainModel = await _walkRepositories.GetAsync(filterOn, filterQuery, sortBy
+                        , isAscending ?? true, pageNumber, pageSize);
+            //Simulating An Error
+            throw new Exception("This is a new exception");
             //Map walks to List<WalkDto>
             var walksDto = _mapper.Map<List<WalkDto>>(walksDomainModel);
-            return Ok(walksDto);
+                return Ok(walksDto);
         }
 
         [HttpGet]
